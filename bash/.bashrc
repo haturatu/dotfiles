@@ -52,6 +52,12 @@ ghelp() {
  (echo "これを説明して" ; cat $1 ) | gemini
 }
 
+_ssh_hosts() {
+  local cur=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=( $(compgen -W "$(awk '{print $1}' ~/.ssh/known_hosts | cut -d, -f1 | sort -u)" -- "$cur") )
+}
+complete -F _ssh_hosts ssh
+
 alias yt4="yt-dlp --merge-output-format mp4"
 
 export PATH="/home/haturatu/.local/bin:$PATH"
