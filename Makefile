@@ -1,6 +1,7 @@
 PWD := $(shell pwd)
 HOME := $(shell echo $$HOME)
-DOTFILES := .bashrc .bash_profile .vimrc .vim
+BASH_FILES := .bashrc .bash_profile
+VIM_FILES := .vimrc .vim
 
 all: install
 
@@ -47,14 +48,22 @@ backup:
 
 update:
 	@echo "Updating dotfiles repository with changes from home directory..."
-	@for file in $(DOTFILES); do \
+	@# Update bash files
+	@for file in $(BASH_FILES); do \
+		if [ -f $(HOME)/$$file ]; then \
+			diff -q $(HOME)/$$file $(PWD)/bash/$$file >/dev/null 2>&1 || \
+			(echo "Updating bash/$$file..." && cp $(HOME)/$$file $(PWD)/bash/$$file); \
+		fi; \
+	done
+	@# Update vim files
+	@for file in $(VIM_FILES); do \
 		if [ -e $(HOME)/$$file ]; then \
 			if [ -d $(HOME)/$$file ]; then \
 				diff -qr $(HOME)/$$file $(PWD)/vim/$$file >/dev/null 2>&1 || \
-				(echo "Updating $$file..." && rsync -a --delete $(HOME)/$$file/ $(PWD)/vim/$$file/); \
+				(echo "Updating vim/$$file..." && rsync -a --delete $(HOME)/$$file/ $(PWD)/vim/$$file/); \
 			else \
-				diff -q $(HOME)/$$file $(PWD)/bash/$$file >/dev/null 2>&1 || \
-				(echo "Updating $$file..." && cp $(HOME)/$$file $(PWD)/bash/$$file); \
+				diff -q $(HOME)/$$file $(PWD)/vim/$$file >/dev/null 2>&1 || \
+				(echo "Updating vim/$$file..." && cp $(HOME)/$$file $(PWD)/vim/$$file); \
 			fi; \
 		fi; \
 	done
