@@ -2,12 +2,19 @@ PWD := $(shell pwd)
 HOME := $(shell echo $$HOME)
 BASH_FILES := .bashrc .bash_profile
 VIM_FILES := .vimrc .vim
+CURRENT_SHELL := $(notdir $(SHELL))
 
 all: install
 
-install: bash vim
+install: vim
+ifeq ($(CURRENT_SHELL),bash)
+	@$(MAKE) bash
+else
+	@echo "Current shell is not bash (found: $(CURRENT_SHELL)), skipping bash installation"
+endif
 
 checkcmd:
+ifeq ($(CURRENT_SHELL),bash)
 	@echo "Checking commands in .bashrc..."
 	@if [ -f $(PWD)/bash/.bashrc ]; then \
 		grep -vE '^(#|$|function |[[:space:]]*#)' $(PWD)/bash/.bashrc | \
@@ -20,6 +27,9 @@ checkcmd:
 	else \
 		echo "Error: .bashrc not found"; \
 	fi
+else
+	@echo "Current shell is not bash (found: $(CURRENT_SHELL)), skipping command check"
+endif
 
 bash:
 	@echo "Installing bash configuration..."
@@ -48,6 +58,7 @@ backup:
 
 update:
 	@echo "Updating dotfiles repository with changes from home directory..."
+ifeq ($(CURRENT_SHELL),bash)
 	@# Update bash files
 	@for file in $(BASH_FILES); do \
 		if [ -f $(HOME)/$$file ]; then \
@@ -55,6 +66,9 @@ update:
 			(echo "Updating bash/$$file..." && cp $(HOME)/$$file $(PWD)/bash/$$file); \
 		fi; \
 	done
+else
+	@echo "Current shell is not bash (found: $(CURRENT_SHELL)), skipping bash files update"
+endif
 	@# Update vim files
 	@for file in $(VIM_FILES); do \
 		if [ -e $(HOME)/$$file ]; then \
