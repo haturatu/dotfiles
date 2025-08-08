@@ -74,4 +74,5 @@ make clean
 | `make checkcmd` | Checks if the commands written in `.bashrc` exist on the system.            |
 | `make clean`    | Removes the installed configuration files (symbolic links).                 |
 | `make backup`   | Backs up existing configuration files to the `~/.dotfiles_backup` directory. |
+| `make update`   | Updates the repository to the latest version.                                |
 
