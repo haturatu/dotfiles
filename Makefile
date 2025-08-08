@@ -1,5 +1,6 @@
 PWD := $(shell pwd)
 HOME := $(shell echo $$HOME)
+DOTFILES := .bashrc .bash_profile .vimrc .vim
 
 all: install
 
@@ -35,6 +36,7 @@ clean:
 	@rm -f $(HOME)/.bash_profile
 	@rm -f $(HOME)/.vimrc
 	@rm -rf $(HOME)/.vim
+
 backup:
 	@echo "Backing up existing files..."
 	@mkdir -p $(HOME)/.dotfiles_backup
@@ -43,4 +45,25 @@ backup:
 	@test -f $(HOME)/.vimrc && cp $(HOME)/.vimrc $(HOME)/.dotfiles_backup/.vimrc.bak || true
 	@test -d $(HOME)/.vim && cp -r $(HOME)/.vim $(HOME)/.dotfiles_backup/.vim.bak || true
 
-.PHONY: all install bash vim clean
+update:
+	@echo "Updating dotfiles repository with changes from home directory..."
+	@for file in $(DOTFILES); do \
+		if [ -e $(HOME)/$$file ]; then \
+			if [ -d $(HOME)/$$file ]; then \
+				diff -qr $(HOME)/$$file $(PWD)/vim/$$file >/dev/null 2>&1 || \
+				(echo "Updating $$file..." && rsync -a --delete $(HOME)/$$file/ $(PWD)/vim/$$file/); \
+			else \
+				diff -q $(HOME)/$$file $(PWD)/bash/$$file >/dev/null 2>&1 || \
+				(echo "Updating $$file..." && cp $(HOME)/$$file $(PWD)/bash/$$file); \
+			fi; \
+		fi; \
+	done
+	@if [ -n "$$(git status --porcelain)" ]; then \
+		git add .; \
+		git commit -m "Update dotfiles from home directory"; \
+		git push; \
+	else \
+		echo "No changes to commit"; \
+	fi
+
+.PHONY: all install bash vim clean backup update
