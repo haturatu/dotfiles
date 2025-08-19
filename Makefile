@@ -2,7 +2,7 @@ PWD := $(shell pwd)
 HOME := $(shell echo $$HOME)
 BASH_FILES := .bashrc .bash_profile
 VIM_FILES := .vimrc .vim
-CURRENT_SHELL := $(notdir $(SHELL))
+CURRENT_SHELL := $(notdir $(shell echo $$SHELL))
 
 all: install
 

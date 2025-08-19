@@ -5,10 +5,13 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+alias gemini="/usr/bin/gemini"
+
 # alias ls='ls --color=auto'
 # alias grep='grep --color=auto'
 # PS1='[\u@\h \W]\$ '
-#export XMODIFIERS=@im=fcitx5
+# export XMODIFIERS=@im=fcitx5
+
 export LANG=ja_JP.UTF-8
 
 export GTK_IM_MODULE=fcitx
@@ -16,8 +19,19 @@ export XMODIFIERS=@im=fcitx
 export QT_IM_MODULE=fcitx
 export LANG=ja_JP.UTF-8
 
-xinput set-prop 11 "libinput Scroll Method Enabled" 0 0 1
-xinput set-prop 11 "libinput Button Scrolling Button" 2
+#xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Scroll Method Enabled" 0 0 1
+
+# Enable scroll with TrackPoint
+if [ ! -z "$DISPLAY" ]; then
+    DEVICE="ETPS/2 Elantech TrackPoint"
+    PROP="libinput Scroll Method Enabled"
+
+    CURRENT=$(xinput list-props "$DEVICE" | grep "$PROP" | awk '{print $5,$6,$7}')
+
+    if [ "$CURRENT" != "0 0 1" ]; then
+        xinput set-prop "$DEVICE" "$PROP" 0 0 1
+    fi
+fi
 
 pp() {
   echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p | base91 |tr -d "\n" && echo
@@ -50,6 +64,10 @@ cc() {
 
 ghelp() {
  (echo "これを説明して" ; cat $1 ) | gemini
+}
+
+greadme() {
+ (echo "Please create a README based on this code. Please output in raw format text using markdown." ; cat "$1" ) | gemini
 }
 
 _ssh_hosts() {
