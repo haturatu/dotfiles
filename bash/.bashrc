@@ -76,6 +76,13 @@ _ssh_hosts() {
 }
 complete -F _ssh_hosts ssh
 
+crontab() {
+  if [ "$1" = "-r" ]; then
+    echo "NOT ALLOWED"
+    return 1
+  fi
+}
+
 alias yt4="yt-dlp --merge-output-format mp4"
 
 export PATH="/home/haturatu/.local/bin:$PATH"
