@@ -58,8 +58,25 @@ pp20g() {
   echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p > ~/.pp20/$2
 }
 
+pp64g() {
+  if [[ -z "$1" || -z "$2" ]]; then
+    echo "Usage: pp64g <string> <filename>"
+    return 1
+  fi
+
+  if [[ ! -d ~/.pp64 ]]; then
+    mkdir -p ~/.pp64
+  fi
+
+  if [[ -f ~/.pp64/$2 ]]; then
+    cat ~/.pp64/$2 | base64 | tr -d "\n" ; echo
+  fi
+
+  echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p > ~/.pp64/$2
+}
+
 cc() {
-  echo -n "$1" | base91 |tr -d "\n" && echo
+  echo -n "$1" | base64 |tr -d "\n" && echo
 }
 
 ghelp() {
@@ -67,7 +84,7 @@ ghelp() {
 }
 
 greadme() {
- (echo "Please create a README based on this code. Please output in raw format text using markdown." ; cat "$1" ) | gemini
+ (echo "Please create a README based on this code. Please output in raw format text using markdown." ; cat "$1"; cat $2; cat $3 ) | gemini
 }
 
 _ssh_hosts() {
@@ -83,6 +100,17 @@ crontab() {
   fi
 }
 
+mkr() {
+  if [ -z "$1" ]; then
+    echo "Usage: mkr <repository-name>"
+    return 1
+  fi
+  GIT_SERVER="git@conoha-freebsd"
+  ssh $GIT_SERVER "git init --bare repos/$1.git"
+  ssh $GIT_SERVER "cd repos/$1.git; git branch -m main"
+  echo "remote add origin $GIT_SERVER:~/repos/$1.git"
+}
+
 alias yt4="yt-dlp --merge-output-format mp4"
 
 export PATH="/home/haturatu/.local/bin:$PATH"
@@ -91,3 +119,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
+eval "$(rbenv init -)"
+
+export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
