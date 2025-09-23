@@ -41,38 +41,44 @@ pp20() {
   echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p | base91 | cut -c -20 | tr -d "\n" && echo
 }
 
-pp20g() {
+pp2091g() {
+  local dir="$HOME/.$FUNCNAME"
   if [[ -z "$1" || -z "$2" ]]; then
-    echo "Usage: pp20g <string> <filename>"
+    echo "Usage: $FUNCNAME <string> <filename>"
     return 1
   fi
 
-  if [[ ! -d ~/.pp20 ]]; then
-    mkdir -p ~/.pp20
+  if [[ ! -d $dir ]]; then
+    mkdir -p $dir
   fi
 
-  if [[ -f ~/.pp20/$2 ]]; then
-    cat ~/.pp20/$2 | base91 | cut -c -20 | tr -d "\n" ; echo
+  if [[ -f $dir/$2 ]]; then
+    cat $dir/$2 | base91 | cut -c -20 | tr -d "\n" ; echo
+    return 0
   fi
 
-  echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p > ~/.pp20/$2
+  echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p > $dir/$2
+  echo "Generated and saved to $dir/$2"
 }
 
-pp64g() {
+pp6464g() {
+  local dir="$HOME/.$FUNCNAME"
   if [[ -z "$1" || -z "$2" ]]; then
-    echo "Usage: pp64g <string> <filename>"
+    echo "Usage: $FUNCNAME <string> <filename>"
     return 1
   fi
 
-  if [[ ! -d ~/.pp64 ]]; then
-    mkdir -p ~/.pp64
+  if [[ ! -d $dir ]]; then
+    mkdir -p $dir
   fi
 
-  if [[ -f ~/.pp64/$2 ]]; then
-    cat ~/.pp64/$2 | base64 | tr -d "\n" ; echo
+  if [[ -f $dir/$2 ]]; then
+    cat $dir/$2 | base64 | tr -d "\n" ; echo
+    return 0
   fi
 
-  echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p > ~/.pp64/$2
+  echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p > $dir/$2
+  echo "Generated and saved to $dir/$2"
 }
 
 cc() {
@@ -114,6 +120,7 @@ mkr() {
 alias yt4="yt-dlp --merge-output-format mp4"
 
 export PATH="/home/haturatu/.local/bin:$PATH"
+export PATH=$HOME/.cargo/bin:$PATH
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
