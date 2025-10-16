@@ -1,4 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =2
+let g:netrw_dirhistcnt =4
+let g:netrw_dirhist_4='/home/haturatu/git/puremania/handlers'
+let g:netrw_dirhist_3='/home/haturatu/git/puremania/types'
 let g:netrw_dirhist_2='/home/haturatu/git/file'
 let g:netrw_dirhist_1='/home/haturatu/git/file/static/js'

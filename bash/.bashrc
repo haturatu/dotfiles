@@ -95,8 +95,18 @@ greadme() {
 
 _ssh_hosts() {
   local cur=${COMP_WORDS[COMP_CWORD]}
-  COMPREPLY=( $(compgen -W "$(awk '{print $1}' ~/.ssh/known_hosts | cut -d, -f1 | sort -u)" -- "$cur") )
+  COMPREPLY=(
+    $(
+      compgen -W "$(
+        {
+          awk '{print $1}' ~/.ssh/known_hosts | cut -d, -f1
+          grep '^Host ' ~/.ssh/config | awk '{print $2}'
+        } | sort -u
+      )" -- "$cur"
+    )
+  )
 }
+
 complete -F _ssh_hosts ssh
 
 crontab() {
@@ -117,15 +127,35 @@ mkr() {
   echo "remote add origin $GIT_SERVER:~/repos/$1.git"
 }
 
+nproxy() {
+  if [ -z "$1" ]; then
+    echo "Usage: nproxy <port>"
+    return 1
+  fi
+
+  local PORT=$1
+  local NGINX_CONF="/etc/nginx/site/proxy.conf"
+  local NOW_PORT=$(grep -oP ':[0-9]+' $NGINX_CONF | uniq)
+  local INIT_SERVICE="rc-service"
+
+  sudo sed -i "s/$NOW_PORT/:$PORT/g" $NGINX_CONF
+  sudo $INIT_SERVICE nginx restart
+  echo "nginx restarted. $NOW_PORT -> :$PORT"
+}
+
 alias yt4="yt-dlp --merge-output-format mp4"
 
 export PATH="/home/haturatu/.local/bin:$PATH"
 export PATH=$HOME/.cargo/bin:$PATH
 
+export PATH="$PATH:$(go env GOPATH)/bin"
+
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(rbenv init -)"
 
 export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
+source /usr/local/sh/haturatu/ppbash.sh
