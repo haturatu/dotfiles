@@ -5,12 +5,17 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias gemini="/usr/bin/gemini"
-
-# alias ls='ls --color=auto'
-# alias grep='grep --color=auto'
 # PS1='[\u@\h \W]\$ '
-# export XMODIFIERS=@im=fcitx5
+#alias ls='ls --color=auto'
+alias ll="ls -la"
+alias la="ls -A"
+alias l="ls -CF"
+alias grep="grep --color=auto"
+alias gemini="/usr/bin/gemini"
+alias yt4="yt-dlp --merge-output-format mp4"
+
+alias gp="git pull"
+alias gpo="git push origin"
 
 export LANG=ja_JP.UTF-8
 
@@ -18,10 +23,9 @@ export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 export QT_IM_MODULE=fcitx
 export LANG=ja_JP.UTF-8
+export EDITOR="vim"
 
-#xinput set-prop "ETPS/2 Elantech TrackPoint" "libinput Scroll Method Enabled" 0 0 1
-
-# Enable scroll with TrackPoint
+# Enable scroll with TrackPoint(ThinkPad)
 if [ ! -z "$DISPLAY" ]; then
     DEVICE="ETPS/2 Elantech TrackPoint"
     PROP="libinput Scroll Method Enabled"
@@ -143,19 +147,22 @@ nproxy() {
   echo "nginx restarted. $NOW_PORT -> :$PORT"
 }
 
-alias yt4="yt-dlp --merge-output-format mp4"
-
-export PATH="/home/haturatu/.local/bin:$PATH"
-export PATH=$HOME/.cargo/bin:$PATH
-
+# Cargo, Go, Pyenv, Rbenv
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
-
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
 
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(rbenv init -)"
 
-export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
-source /usr/local/sh/haturatu/ppbash.sh
+# Android SDK, Java, and pppbash
+source /usr/local/sh/$USER/ppbash.sh
+export PATH=$JAVA_HOME/bin:$PATH
+export ANDROID_SDK_ROOT=/opt/android-sdk
+export ANDROID_HOME=/opt/android-sdk
+export PATH=$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
