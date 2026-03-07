@@ -3,4 +3,4 @@
 #
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
-. "/home/haturatu/.deno/env"
+. "$HOME/.deno/env"
