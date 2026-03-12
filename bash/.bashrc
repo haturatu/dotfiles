@@ -18,6 +18,8 @@ alias gp="git pull"
 alias gpo="git push origin"
 
 export LANG=ja_JP.UTF-8
+export HISTSIZE=1000
+export HISTFILESIZE=2000
 
 export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
@@ -147,17 +149,17 @@ nproxy() {
   echo "nginx restarted. $NOW_PORT -> :$PORT"
 }
 
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(rbenv init -)"
+
 # Cargo, Go, Pyenv, Rbenv
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
-export PYENV_ROOT="$HOME/.pyenv"
+#export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
-
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(rbenv init -)"
 
 # Android SDK, Java, and pppbash
 source /usr/local/sh/$USER/ppbash.sh
@@ -166,3 +168,5 @@ export ANDROID_SDK_ROOT=/opt/android-sdk
 export ANDROID_HOME=/opt/android-sdk
 export PATH=$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
+
+eval "$(hl completion bash)" # hl-cli-completion
