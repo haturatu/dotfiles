@@ -6,7 +6,8 @@
 [[ $- != *i* ]] && return
 
 # PS1='[\u@\h \W]\$ '
-#alias ls='ls --color=auto'
+PS1='\[\033[1;32;40m\]\h\[\033[0;37;40m\]:\[\033[31;40m\][\[\033[1;34;40m\]\u\[\033[0;31;40m\]]\[\033[0;37;40m\]:\[\033[35;40m\]\w\[\033[1;33;40m\]$\[\033[0m\]'
+alias ls='ls --color=auto'
 alias ll="ls -la"
 alias la="ls -A"
 alias l="ls -CF"
@@ -168,5 +169,7 @@ export ANDROID_SDK_ROOT=/opt/android-sdk
 export ANDROID_HOME=/opt/android-sdk
 export PATH=$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
+
+export LD_PRELOAD=/usr/lib/libjemalloc.so.2
 
 eval "$(hl completion bash)" # hl-cli-completion

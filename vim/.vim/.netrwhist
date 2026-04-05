@@ -1,5 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =5
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/home/haturatu/git/alleycat/frontend/public'
+let g:netrw_dirhist_7='/home/haturatu/git/gcp-deg-labs/config'
+let g:netrw_dirhist_6='/home/haturatu/git/gcp-deg-labs/.github/scripts'
 let g:netrw_dirhist_5='/home/haturatu/git/gcp-deg-labs/products/discord-app/bootstrap'
 let g:netrw_dirhist_4='/home/haturatu/.config'
 let g:netrw_dirhist_3='/home/haturatu/git/hyperliquid-cli/python-cli/.git'
@@ -7,6 +10,3 @@ let g:netrw_dirhist_2='/home/haturatu/git/autotagger/cmd'
 let g:netrw_dirhist_1='/home/haturatu/git/ViMusic/.gradle-user'
 let g:netrw_dirhist_0='/home/haturatu/git/degs-labs-fornt/monitor-ui/.git'
 let g:netrw_dirhist_9='/home/haturatu/git/deg-server-logger/discord-logger'
-let g:netrw_dirhist_8='/home/haturatu/git/ncmma/inago-check'
-let g:netrw_dirhist_7='/home/haturatu/git/etf-converter-v2/.git'
-let g:netrw_dirhist_6='/home/haturatu/git/etf-html2csv/etf-converter-v2/fetcher-service'
