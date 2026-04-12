@@ -163,7 +163,7 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
 
 # Android SDK, Java, and pppbash
-source /usr/local/sh/$USER/ppbash.sh
+source /usr/local/sh/$USER/ppbash.sh 2>/dev/null || true
 export PATH=$JAVA_HOME/bin:$PATH
 export ANDROID_SDK_ROOT=/opt/android-sdk
 export ANDROID_HOME=/opt/android-sdk
