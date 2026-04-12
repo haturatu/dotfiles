@@ -170,4 +170,4 @@ export ANDROID_HOME=/opt/android-sdk
 export PATH=$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk/
 
-eval "$(hl completion bash)" # hl-cli-completion
+command -v hl >/dev/null 2>&1 && eval "$(hl completion bash)" # hl-cli-completion
