@@ -152,9 +152,9 @@ nproxy() {
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)" 2>/dev/null || true
-eval "$(pyenv init -)" 2>/dev/null || true
-eval "$(rbenv init -)" 2>/dev/null || true
+command -v pyenv >/dev/null 2>&1 && eval "$(pyenv init --path)"
+command -v pyenv >/dev/null 2>&1 && eval "$(pyenv init -)"
+command -v rbenv >/dev/null 2>&1 && eval "$(rbenv init -)"
 
 # Cargo, Go, Pyenv, Rbenv
 export PATH="$HOME/.local/bin:$PATH"
