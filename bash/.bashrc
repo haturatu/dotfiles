@@ -28,18 +28,6 @@ export QT_IM_MODULE=fcitx
 export LANG=ja_JP.UTF-8
 export EDITOR="vim"
 
-# Enable scroll with TrackPoint(ThinkPad)
-if [ ! -z "$DISPLAY" ]; then
-    DEVICE="ETPS/2 Elantech TrackPoint"
-    PROP="libinput Scroll Method Enabled"
-
-    CURRENT=$(xinput list-props "$DEVICE" | grep "$PROP" | awk '{print $5,$6,$7}')
-
-    if [ "$CURRENT" != "0 0 1" ]; then
-        xinput set-prop "$DEVICE" "$PROP" 0 0 1
-    fi
-fi
-
 pp() {
   echo -n "$1" | sha384sum | awk '{print $1}' | xxd -r -p | base91 |tr -d "\n" && echo
 }
