@@ -113,13 +113,23 @@ crontab() {
 
 mkr() {
   if [ -z "$1" ]; then
-    echo "Usage: mkr <repository-name>"
+    echo "Usage: mkr <repository-name> [description]"
     return 1
   fi
-  GIT_SERVER="git@conoha-freebsd"
-  ssh $GIT_SERVER "git init --bare repos/$1.git"
-  ssh $GIT_SERVER "cd repos/$1.git; git branch -m main"
-  echo "remote add origin $GIT_SERVER:~/repos/$1.git"
+
+  local repo_name="$1"
+  local desc="$2"
+  GIT_SERVER="git@home.local"
+
+  ssh $GIT_SERVER "mkdir -p repos/$repo_name"
+  ssh $GIT_SERVER "git init --bare repos/$repo_name"
+  ssh $GIT_SERVER "cd repos/$repo_name && git symbolic-ref HEAD refs/heads/main"
+
+  if [ -n "$desc" ]; then
+    ssh $GIT_SERVER "echo \"$desc\" > repos/$repo_name/description"
+  fi
+
+  echo "git remote add origin $GIT_SERVER:~/repos/$repo_name"
 }
 
 nproxy() {
