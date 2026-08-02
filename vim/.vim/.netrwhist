@@ -1,5 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =5
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/home/haturatu/git/s3dock/app/build'
+let g:netrw_dirhist_6='/home/haturatu/git/ViMusic/gradle'
 let g:netrw_dirhist_5='/home/haturatu/git/ght/.github/workflows'
 let g:netrw_dirhist_4='/home/haturatu/git/ViMusic/gradle'
 let g:netrw_dirhist_3='/home/haturatu/git/ViMusic/app/build'
@@ -8,5 +10,3 @@ let g:netrw_dirhist_1='/home/haturatu/git/ViMusic/app/src/main/kotlin/app/vimusi
 let g:netrw_dirhist_0='/home/haturatu/git/ViMusic/gradle'
 let g:netrw_dirhist_9='/home/haturatu/git/dnsmasq-blockdns'
 let g:netrw_dirhist_8='/home/haturatu/git/alleycat/frontend/public'
-let g:netrw_dirhist_7='/home/haturatu/git/gcp-deg-labs/config'
-let g:netrw_dirhist_6='/home/haturatu/git/gcp-deg-labs/.github/scripts'
