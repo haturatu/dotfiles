@@ -14,6 +14,8 @@ alias l="ls -CF"
 alias grep="grep --color=auto"
 alias gemini="/usr/bin/gemini"
 alias yt4="yt-dlp --merge-output-format mp4"
+alias dcd="sudo docker compose down"
+alias dcud="sudo docker compose up --build -d"
 
 alias gp="git pull"
 alias gpo="git push origin"
