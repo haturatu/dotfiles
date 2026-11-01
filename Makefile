@@ -1,6 +1,7 @@
 REPO_ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 CURRENT_SHELL := $(notdir $(shell printf '%s' "$$SHELL"))
 DOTFILES_SCRIPT := $(REPO_ROOT)/scripts/dotfiles.sh
+VIM_PLUGIN_SCRIPT := $(REPO_ROOT)/scripts/vim-plugins.sh
 
 all: install
 
@@ -11,6 +12,7 @@ else
 	@sh "$(DOTFILES_SCRIPT)" install vim
 	@echo "Current shell is not bash (found: $(CURRENT_SHELL)), skipping bash installation"
 endif
+	@sh "$(VIM_PLUGIN_SCRIPT)" install
 
 checkcmd:
 ifeq ($(CURRENT_SHELL),bash)
@@ -35,6 +37,10 @@ bash:
 
 vim:
 	@sh "$(DOTFILES_SCRIPT)" install vim
+	@sh "$(VIM_PLUGIN_SCRIPT)" install
+
+vim-update:
+	@sh "$(VIM_PLUGIN_SCRIPT)" update
 
 clean:
 	@sh "$(DOTFILES_SCRIPT)" clean
@@ -45,4 +51,4 @@ backup:
 update:
 	@git -C "$(REPO_ROOT)" pull --ff-only
 
-.PHONY: all install bash vim clean backup update checkcmd
+.PHONY: all install bash vim vim-update clean backup update checkcmd

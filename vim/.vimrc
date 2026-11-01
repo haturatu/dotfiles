@@ -21,7 +21,10 @@ let g:go_def_mode='gopls'
 let g:go_info_mode='gopls'
 let g:go_fmt_command='goimports'
 
-colorscheme hatsune_miku
+" A fresh installation may not have this locally installed colorscheme.
+if !empty(globpath(&runtimepath, 'colors/hatsune_miku.vim'))
+  colorscheme hatsune_miku
+endif
 
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#confirm() :
