@@ -1,78 +1,95 @@
 # dotfiles
 
----
+Bash and Vim configurations installed as symbolic links.
 
-## 1. Check commands in `.bashrc`
+## Before installing
 
-Before installing, it's recommended to check whether the commands used in `.bashrc` exist on your system:
+Optionally check the commands used in `.bashrc`:
 
 ```sh
 make checkcmd
 ```
 
-This helps ensure there won’t be missing command errors after applying the configuration.
+## Install
 
----
+```sh
+make install   # Vim + plugins and, when your login shell is Bash, Bash
+make bash      # Bash only
+make vim       # Vim + plugins only
+```
 
-## 2. Backup existing configuration
+If any destination already exists (including a directory or an existing symlink),
+it is **moved to a unique directory** under `~/.dotfiles_backup/install.*`
+before creating the new link. Re-running an installation on matching links is safe
+and will not create unnecessary backups. Installation does not delete the old
+configuration. Inspect the backup directory before removing it.
 
-Back up your current configuration files before installing:
+You can also create a separate, manual backup of the current configuration:
 
 ```sh
 make backup
 ```
 
-This command backs up the following files to `~/.dotfiles_backup`:
+This copies `.bashrc`, `.bash_profile`, `.vimrc`, and `.vim` (when present)
+into a new `~/.dotfiles_backup/install.*` directory. Existing symlinks are
+copied as symlinks rather than followed.
 
-- `.bashrc`
-- `.bash_profile`
-- `.vimrc`
-- `.vim/` (directory)
+### Vim plugins
 
----
+`make install` and `make vim` automatically run vim-plug's noninteractive
+`:PlugInstall --sync` after the Vim configuration is installed. This installs
+`vim-go`, `vim-terraform`, and `coc.nvim` as declared in `.vimrc`.
+Already-installed plugins are reused instead of being fetched again. The first
+installation requires `vim`, `git`, network access, and dependencies required
+by the individual plugins (for example, Go for vim-go's `GoUpdateBinaries` hook).
+Installation fails with an error if plugins cannot be installed.
 
-## 3. Install configurations
-
-Install both `bash` and `vim` configurations:
-
-```sh
-make install
-```
-
-To install only the `bash` configurations:
+The plugin working tree is ignored by Git. To **explicitly update** installed
+plugins, run:
 
 ```sh
-make bash
+make vim-update
 ```
 
-To install only the `vim` configurations:
+This invokes `:PlugUpdate --sync`; it does not run as part of `make update`.
+Vim's `hatsune_miku` colorscheme is used only when available, so it does not
+prevent a clean installation.
 
-```sh
-make vim
-```
-
----
-
-## 4. Clean up
-
-Remove the installed symbolic links:
+## Remove or restore
 
 ```sh
 make clean
 ```
 
----
+`make clean` removes **only** symbolic links that still point at this repository's
+managed files. It does not delete ordinary files, directories, or unrelated
+symlinks, and it does not automatically restore backups.
 
-## Available Makefile Commands
+To restore a previous configuration, run `make clean`, then copy or move the
+relevant entries back from the appropriate `~/.dotfiles_backup/install.*`
+directory. Be sure to choose the correct backup if you have run the installer
+more than once.
 
-| Command         | Description                                                                 |
-|----------------|-----------------------------------------------------------------------------|
-| `make all`      | The default task. Executes `install`.                                       |
-| `make install`  | Installs both `bash` and `vim` configurations.                              |
-| `make bash`     | Installs only the `bash` configuration (`.bashrc`, `.bash_profile`).        |
-| `make vim`      | Installs only the `vim` configuration (`.vimrc`, `.vim/`).                  |
-| `make checkcmd` | Checks if the commands written in `.bashrc` exist on the system.            |
-| `make clean`    | Removes the installed configuration files (symbolic links).                 |
-| `make backup`   | Backs up existing configuration files to the `~/.dotfiles_backup` directory. |
-| `make update`   | Updates the repository to the latest version.                                |
+## Update
 
+```sh
+make update
+```
+
+This runs `git pull --ff-only` in the dotfiles repository. It does **not** copy
+files from your home directory into the repository, commit changes, push to
+GitHub, or update Vim plugins. Make changes in the repository and use Git
+explicitly to commit/push.
+
+## Available commands
+
+| Command | Description |
+| --- | --- |
+| `make all` / `make install` | Install Vim, its plugins, and Bash when the login shell is Bash. |
+| `make bash` | Install Bash configuration only. |
+| `make vim` | Install Vim configuration and missing plugins. |
+| `make vim-update` | Explicitly update installed Vim plugins. |
+| `make checkcmd` | Check known commands referenced in `.bashrc`. |
+| `make backup` | Copy the current settings into a new backup directory. |
+| `make clean` | Remove only managed symbolic links. |
+| `make update` | Fast-forward pull the repository without committing or pushing. |
